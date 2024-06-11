@@ -8,6 +8,7 @@ import styles from './styles.module.css';
 import { Title } from '@/components/Title';
 import { ChevronLeft } from 'lucide-react';
 import { Header } from '@/components/Header';
+import InputMask from 'react-input-mask';
 
 export const PageForm = () => {
   const navigate = useNavigate();
@@ -89,15 +90,20 @@ export const PageForm = () => {
 
             <div className={styles.input}>
               <label htmlFor='phone'>Telefone</label>
-              <input
-                type='text'
-                id='phone'
-                placeholder='(00) 9 1234-5678'
-                {...register('phone')}
-                style={{
-                  border: errors.phone && '2px red solid',
-                }}
-              />
+
+              <InputMask mask='(99) 9 9999-9999' {...register('phone')}>
+                {(inputProps: React.InputHTMLAttributes<HTMLInputElement>) => (
+                  <input
+                    type='text'
+                    id='phone'
+                    placeholder='(99) 9 9999-9999'
+                    {...inputProps}
+                    style={{
+                      border: errors.phone && '2px red solid',
+                    }}
+                  />
+                )}
+              </InputMask>
               {errors.phone && <span>{errors.phone.message}</span>}
             </div>
           </div>

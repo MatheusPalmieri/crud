@@ -22,6 +22,8 @@ export const PageDetails = () => {
 
   const user = getUser(params.id) as User;
 
+  if (!user) navigate('/');
+
   const StatusLabel: Record<UserStatus, string> = {
     [UserStatus.ACTIVE]: 'Ativo',
     [UserStatus.INACTIVE]: 'Inativo',
