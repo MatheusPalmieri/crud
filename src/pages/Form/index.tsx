@@ -1,20 +1,21 @@
 import { userProps, userSchema } from '@/schemas/user.schema';
 import { getUser, newUser, updateUser } from '@/services/user';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from './styles.module.css';
 import { Title } from '@/components/Title';
 import { ChevronLeft } from 'lucide-react';
 import { Header } from '@/components/Header';
-import InputMask from 'react-input-mask';
+import { formatPhone } from '@/utils/format';
 
 export const PageForm = () => {
   const navigate = useNavigate();
   const params = useParams();
 
-  const isEditing = !!params.id;
+  const [isEditing] = useState<boolean>(!!params.id);
+  const [phone, setPhone] = useState<string>('');
 
   const {
     register,
@@ -31,6 +32,7 @@ export const PageForm = () => {
     setValue('id', user.id);
     setValue('name', user.name);
     setValue('phone', user.phone);
+    setPhone(user.phone);
     setValue('email', user.email);
     setValue('password', user.password);
     setValue('status', user.status);
@@ -50,6 +52,12 @@ export const PageForm = () => {
     } catch (error) {
       console.error('Error newUser', error);
     }
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formattedPhone = formatPhone(e.target.value);
+    setPhone(formattedPhone);
+    setValue('phone', formattedPhone, { shouldValidate: true });
   };
 
   return (
@@ -91,19 +99,17 @@ export const PageForm = () => {
             <div className={styles.input}>
               <label htmlFor='phone'>Telefone</label>
 
-              <InputMask mask='(99) 9 9999-9999' {...register('phone')}>
-                {(inputProps: React.InputHTMLAttributes<HTMLInputElement>) => (
-                  <input
-                    type='text'
-                    id='phone'
-                    placeholder='(99) 9 9999-9999'
-                    {...inputProps}
-                    style={{
-                      border: errors.phone && '2px red solid',
-                    }}
-                  />
-                )}
-              </InputMask>
+              <input
+                type='tel'
+                id='phone'
+                placeholder='(99) 9 9999-9999'
+                value={phone}
+                onChange={handlePhoneChange}
+                style={{
+                  border: errors.phone && '2px red solid',
+                }}
+              />
+
               {errors.phone && <span>{errors.phone.message}</span>}
             </div>
           </div>
