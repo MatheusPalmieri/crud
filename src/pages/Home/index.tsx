@@ -15,29 +15,15 @@ dayjs.extend(relativeTime);
 dayjs.locale('pt-br');
 
 export const Home = () => {
-  const { users, total, limit, page } = getUsers();
-
   const navigate = useNavigate();
 
-  const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
+  const { users: initialUsers, total, limit, page } = getUsers();
 
-  const handleDelete = (id: string) => {
-    if (confirmDelete) {
-      deleteUser(id);
-    } else {
-      setConfirmDelete(true);
-    }
+  const [users, setUsers] = useState<User[]>(initialUsers);
+
+  const updateUsers = () => {
+    setUsers(getUsers().users);
   };
-
-  useEffect(() => {
-    if (confirmDelete) {
-      const timeout = setTimeout(() => {
-        setConfirmDelete(false);
-      }, 3000);
-
-      return () => clearTimeout(timeout);
-    }
-  }, [confirmDelete]);
 
   return (
     <main className={styles.section}>
@@ -72,54 +58,44 @@ export const Home = () => {
 
           <tbody>
             {users.length > 0 ? (
-              users.map((user: User) => (
-                <tr
-                  key={user.id}
-                  className={styles.tbody_tr}
-                  onClick={() => navigate(`/detalhes/${user.id}`)}
-                >
-                  <td className={styles.tb}>{user.id}</td>
-                  <td className={styles.tb}>
-                    <div className={styles.tb_info}>
-                      <span className={styles.tb_name}>{user.name}</span>
-                      <span>{user.email}</span>
-                    </div>
-                  </td>
-                  <td className={styles.tb}>{user.phone}</td>
-                  <td className={styles.tb}>{dayjs().to(user.createdAt)}</td>
-                  <td className={styles.tb}>
-                    <div className={styles.tbody_actions}>
-                      <button
-                        className={styles.tbody_btn}
-                        style={{
-                          backgroundColor: '#226fe1',
-                        }}
-                        onClick={(e: React.MouseEvent) => {
-                          e.stopPropagation();
-                          navigate(`/editar/${user.id}`);
-                        }}
-                      >
-                        <Pencil size={18} />
-                        Editar
-                      </button>
+              users.map((user: User) => {
+                return (
+                  <tr
+                    key={user.id}
+                    className={styles.tbody_tr}
+                    onClick={() => navigate(`/detalhes/${user.id}`)}
+                  >
+                    <td className={styles.tb}>{user.id}</td>
+                    <td className={styles.tb}>
+                      <div className={styles.tb_info}>
+                        <span className={styles.tb_name}>{user.name}</span>
+                        <span>{user.email}</span>
+                      </div>
+                    </td>
+                    <td className={styles.tb}>{user.phone}</td>
+                    <td className={styles.tb}>{dayjs().to(user.createdAt)}</td>
+                    <td className={styles.tb}>
+                      <div className={styles.tbody_actions}>
+                        <button
+                          className={styles.tbody_btn}
+                          style={{
+                            backgroundColor: '#226fe1',
+                          }}
+                          onClick={(e: React.MouseEvent) => {
+                            e.stopPropagation();
+                            navigate(`/editar/${user.id}`);
+                          }}
+                        >
+                          <Pencil size={18} />
+                          Editar
+                        </button>
 
-                      <button
-                        className={styles.tbody_btn}
-                        style={{
-                          backgroundColor: '#e12245',
-                        }}
-                        onClick={(e: React.MouseEvent) => {
-                          e.stopPropagation();
-                          handleDelete(user.id);
-                        }}
-                      >
-                        <Trash2 size={18} />
-                        {confirmDelete ? 'Confirmar' : 'Excluir'}
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))
+                        <ButtonDelete user={user} updateUsers={updateUsers} />
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })
             ) : (
               <tr>
                 <td
@@ -162,5 +138,44 @@ export const Home = () => {
         </table>
       </div>
     </main>
+  );
+};
+
+const ButtonDelete = ({ user, updateUsers }: { user: User; updateUsers: () => void }) => {
+  const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
+
+  const handleDelete = (id: string) => {
+    if (confirmDelete) {
+      deleteUser(id);
+      updateUsers();
+    } else {
+      setConfirmDelete(true);
+    }
+  };
+
+  useEffect(() => {
+    if (confirmDelete) {
+      const timeout = setTimeout(() => {
+        setConfirmDelete(false);
+      }, 3000);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [confirmDelete]);
+
+  return (
+    <button
+      className={styles.tbody_btn}
+      style={{
+        backgroundColor: '#e12245',
+      }}
+      onClick={(e: React.MouseEvent) => {
+        e.stopPropagation();
+        handleDelete(user.id);
+      }}
+    >
+      <Trash2 size={18} />
+      {confirmDelete ? 'Confirmar' : 'Excluir'}
+    </button>
   );
 };
