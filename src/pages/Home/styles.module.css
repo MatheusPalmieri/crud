@@ -1,0 +1,110 @@
+.section {
+  padding: 20px;
+
+  max-width: 920px;
+  margin-inline: auto;
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.table_container {
+  border: 1px solid #ccc;
+
+  border-radius: 12px;
+}
+
+.table {
+  width: 100%;
+}
+
+.thead_tr {
+  border-bottom: 1px solid #ccc;
+}
+
+.th {
+  font-size: small;
+  color: #111;
+
+  padding: 12px 16px;
+}
+
+.tbody_tr {
+  height: 60px;
+
+  border-bottom: 1px solid #ccc;
+  transition: background-color 0.3s;
+}
+
+.tbody_tr:hover {
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+.tbody_actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.tbody_btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  width: 100px;
+  height: 30px;
+
+  border-radius: 6px;
+
+  font-size: small;
+  font-weight: 600;
+  color: #fff;
+
+  transition: filter 0.3s;
+}
+
+.tbody_btn:hover {
+  cursor: pointer;
+  filter: brightness(0.9);
+}
+
+.tr:hover {
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+.tb {
+  font-size: small;
+  color: #222;
+
+  padding: 12px 16px;
+}
+
+.tb_info {
+  display: flex;
+  flex-direction: column;
+}
+
+.tb_name {
+  text-transform: capitalize;
+  font-weight: bold;
+  color: #111;
+}
+
+.tfoot_pagination {
+  width: 100%;
+
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+}
