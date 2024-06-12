@@ -15,29 +15,6 @@
   align-items: center;
 }
 
-.btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-
-  width: 100px;
-  height: 30px;
-
-  border-radius: 6px;
-
-  font-size: small;
-  font-weight: 600;
-  color: #fff;
-
-  transition: filter 0.3s;
-}
-
-.btn:hover {
-  cursor: pointer;
-  filter: brightness(0.9);
-}
-
 .details {
   border: 1px solid #ccc;
   border-radius: 12px;
@@ -57,27 +34,4 @@
   display: flex;
   justify-content: flex-end;
   gap: 10px;
-}
-
-.btn_actions {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-
-  width: 100px;
-  height: 30px;
-
-  border-radius: 6px;
-
-  font-size: small;
-  font-weight: 600;
-  color: #fff;
-
-  transition: filter 0.3s;
-}
-
-.btn_actions:hover {
-  cursor: pointer;
-  filter: brightness(0.9);
 }

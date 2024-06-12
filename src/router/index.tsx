@@ -1,12 +1,12 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { Home } from '../pages/Home';
+import { PageHome } from '../pages/Home';
 import { PageForm } from '@/pages/Form';
 import { PageDetails } from '@/pages/Details';
 
 export const router = createBrowserRouter([
   {
     path: '',
-    element: <Home />,
+    element: <PageHome />,
   },
   {
     path: 'novo',

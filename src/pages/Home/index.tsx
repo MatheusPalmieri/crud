@@ -10,11 +10,12 @@ import { Pencil, Trash2, UserPlus } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Header } from '@/components/Header';
+import { Button } from '@/components/Button';
 
 dayjs.extend(relativeTime);
 dayjs.locale('pt-br');
 
-export const Home = () => {
+export const PageHome = () => {
   const navigate = useNavigate();
 
   const { users: initialUsers, total, limit, page } = getUsers();
@@ -32,16 +33,9 @@ export const Home = () => {
       <div className={styles.header}>
         <Title>Lista de pacientes</Title>
 
-        <button
-          className={styles.tbody_btn}
-          style={{
-            backgroundColor: '#15aa31',
-          }}
-          onClick={() => navigate(`/novo`)}
-        >
-          <UserPlus size={18} />
+        <Button onClick={() => navigate(`/novo`)} leftIcon={<UserPlus size={18} />}>
           Novo
-        </button>
+        </Button>
       </div>
 
       <div className={styles.table_container}>
@@ -76,19 +70,15 @@ export const Home = () => {
                     <td className={styles.tb}>{dayjs().to(user.createdAt)}</td>
                     <td className={styles.tb}>
                       <div className={styles.tbody_actions}>
-                        <button
-                          className={styles.tbody_btn}
-                          style={{
-                            backgroundColor: '#226fe1',
-                          }}
+                        <Button
+                          leftIcon={<Pencil size={18} />}
                           onClick={(e: React.MouseEvent) => {
                             e.stopPropagation();
                             navigate(`/editar/${user.id}`);
                           }}
                         >
-                          <Pencil size={18} />
                           Editar
-                        </button>
+                        </Button>
 
                         <ButtonDelete user={user} updateUsers={updateUsers} />
                       </div>
@@ -164,18 +154,14 @@ const ButtonDelete = ({ user, updateUsers }: { user: User; updateUsers: () => vo
   }, [confirmDelete]);
 
   return (
-    <button
-      className={styles.tbody_btn}
-      style={{
-        backgroundColor: '#e12245',
-      }}
+    <Button
+      leftIcon={<Trash2 size={18} />}
       onClick={(e: React.MouseEvent) => {
         e.stopPropagation();
         handleDelete(user.id);
       }}
     >
-      <Trash2 size={18} />
       {confirmDelete ? 'Confirmar' : 'Excluir'}
-    </button>
+    </Button>
   );
 };

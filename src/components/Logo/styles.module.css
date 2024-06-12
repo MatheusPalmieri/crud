@@ -1,12 +1,19 @@
-.header {
+.logo {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.img {
+.icon {
   width: 30px;
   height: 30px;
+
+  border-radius: 8px;
+  background-color: #bb18ec;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .title {

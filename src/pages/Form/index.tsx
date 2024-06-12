@@ -9,6 +9,7 @@ import { Title } from '@/components/Title';
 import { ChevronLeft } from 'lucide-react';
 import { Header } from '@/components/Header';
 import { formatPhone } from '@/utils/format';
+import { Button } from '@/components/Button';
 
 export const PageForm = () => {
   const navigate = useNavigate();
@@ -65,18 +66,11 @@ export const PageForm = () => {
       <Header />
 
       <div className={styles.header}>
-        <Title>Lista de pacientes</Title>
+        <Title>{isEditing ? `Editar paciente #${params.id}` : 'Novo paciente'}</Title>
 
-        <button
-          className={styles.btn}
-          style={{
-            backgroundColor: '#15aa31',
-          }}
-          onClick={() => navigate(`/`)}
-        >
-          <ChevronLeft size={18} />
+        <Button leftIcon={<ChevronLeft size={18} />} onClick={() => navigate(`/`)}>
           Voltar
-        </button>
+        </Button>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
@@ -145,9 +139,15 @@ export const PageForm = () => {
           </div>
         </div>
 
-        <button type='submit' className={styles.form_btn}>
+        <Button
+          type='submit'
+          style={{
+            marginTop: '1rem',
+            marginLeft: 'auto',
+          }}
+        >
           {isEditing ? 'Salvar' : 'Criar'}
-        </button>
+        </Button>
       </form>
     </main>
   );

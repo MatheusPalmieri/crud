@@ -15,29 +15,6 @@
   align-items: center;
 }
 
-.btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-
-  width: 100px;
-  height: 30px;
-
-  border-radius: 6px;
-
-  font-size: small;
-  font-weight: 600;
-  color: #fff;
-
-  transition: filter 0.3s;
-}
-
-.btn:hover {
-  cursor: pointer;
-  filter: brightness(0.9);
-}
-
 .form_inputs {
   display: flex;
   flex-direction: column;
@@ -79,30 +56,4 @@
 .input span {
   font-size: small;
   color: red;
-}
-
-.form_btn {
-  width: 100px;
-  height: 30px;
-
-  margin-top: 20px;
-
-  background-color: rgb(0, 72, 255);
-  border-radius: 6px;
-
-  font-weight: 600;
-  color: #fff;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  float: right;
-
-  transition: filter 0.3s;
-}
-
-.form_btn:hover {
-  cursor: pointer;
-  filter: brightness(0.9);
 }

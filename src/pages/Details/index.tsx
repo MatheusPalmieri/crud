@@ -10,6 +10,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/pt-br';
 import { User, UserStatus } from '@/interfaces/user';
 import { useEffect, useState } from 'react';
+import { Button } from '@/components/Button';
 
 dayjs.extend(relativeTime);
 dayjs.locale('pt-br');
@@ -56,16 +57,9 @@ export const PageDetails = () => {
       <div className={styles.header}>
         <Title>Paciente #{user.id}</Title>
 
-        <button
-          className={styles.btn}
-          style={{
-            backgroundColor: '#15aa31',
-          }}
-          onClick={() => navigate(`/`)}
-        >
-          <ChevronLeft size={18} />
+        <Button leftIcon={<ChevronLeft size={18} />} onClick={() => navigate(`/`)}>
           Voltar
-        </button>
+        </Button>
       </div>
 
       <div className={styles.details}>
@@ -97,33 +91,25 @@ export const PageDetails = () => {
         <div className={styles.divider} />
 
         <div className={styles.actions}>
-          <button
-            className={styles.btn_actions}
-            style={{
-              backgroundColor: '#226fe1',
-            }}
+          <Button
+            leftIcon={<Pencil size={18} />}
             onClick={(e: React.MouseEvent) => {
               e.stopPropagation();
               navigate(`/editar/${user.id}`);
             }}
           >
-            <Pencil size={18} />
             Editar
-          </button>
+          </Button>
 
-          <button
-            className={styles.btn_actions}
-            style={{
-              backgroundColor: '#e12245',
-            }}
+          <Button
+            leftIcon={<Trash2 size={18} />}
             onClick={(e: React.MouseEvent) => {
               e.stopPropagation();
               handleDelete(user.id);
             }}
           >
-            <Trash2 size={18} />
             {confirmDelete ? 'Confirmar' : 'Excluir'}
-          </button>
+          </Button>
         </div>
       </div>
     </main>
