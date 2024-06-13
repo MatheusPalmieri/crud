@@ -9,12 +9,6 @@
   gap: 20px;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .form_inputs {
   display: flex;
   flex-direction: column;

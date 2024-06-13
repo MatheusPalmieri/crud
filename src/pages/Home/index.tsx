@@ -1,16 +1,17 @@
 import { User } from '@/interfaces/user';
-import { deleteUser, getUsers } from '@/services/user';
+import { getUsers } from '@/services/user';
 import styles from './styles.module.css';
-import { Title } from '@/components/Title';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/pt-br';
 
-import { Pencil, Trash2, UserPlus } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { UserPlus } from 'lucide-react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Header } from '@/components/Header';
-import { Button } from '@/components/Button';
+import { Navbar } from '@/components/Navbar';
+import { ButtonDelete } from '@/components/ButtonDelete';
+import { ButtonEdit } from '@/components/ButtonEdit';
 
 dayjs.extend(relativeTime);
 dayjs.locale('pt-br');
@@ -30,13 +31,12 @@ export const PageHome = () => {
     <main className={styles.section}>
       <Header />
 
-      <div className={styles.header}>
-        <Title>Lista de pacientes</Title>
-
-        <Button onClick={() => navigate(`/novo`)} leftIcon={<UserPlus size={18} />}>
-          Novo
-        </Button>
-      </div>
+      <Navbar
+        title='Lista de pacientes'
+        buttonIcon={<UserPlus size={18} />}
+        buttonText='Novo'
+        buttonRoute='/novo'
+      />
 
       <div className={styles.table_container}>
         <table className={styles.table}>
@@ -52,40 +52,30 @@ export const PageHome = () => {
 
           <tbody>
             {users.length > 0 ? (
-              users.map((user: User) => {
-                return (
-                  <tr
-                    key={user.id}
-                    className={styles.tbody_tr}
-                    onClick={() => navigate(`/detalhes/${user.id}`)}
-                  >
-                    <td className={styles.tb}>{user.id}</td>
-                    <td className={styles.tb}>
-                      <div className={styles.tb_info}>
-                        <span className={styles.tb_name}>{user.name}</span>
-                        <span>{user.email}</span>
-                      </div>
-                    </td>
-                    <td className={styles.tb}>{user.phone}</td>
-                    <td className={styles.tb}>{dayjs().to(user.createdAt)}</td>
-                    <td className={styles.tb}>
-                      <div className={styles.tbody_actions}>
-                        <Button
-                          leftIcon={<Pencil size={18} />}
-                          onClick={(e: React.MouseEvent) => {
-                            e.stopPropagation();
-                            navigate(`/editar/${user.id}`);
-                          }}
-                        >
-                          Editar
-                        </Button>
+              users.map((user: User) => (
+                <tr
+                  key={user.id}
+                  className={styles.tbody_tr}
+                  onClick={() => navigate(`/detalhes/${user.id}`)}
+                >
+                  <td className={styles.tb}>{user.id}</td>
+                  <td className={styles.tb}>
+                    <div className={styles.tb_info}>
+                      <span className={styles.tb_name}>{user.name}</span>
+                      <span>{user.email}</span>
+                    </div>
+                  </td>
+                  <td className={styles.tb}>{user.phone}</td>
+                  <td className={styles.tb}>{dayjs().to(user.createdAt)}</td>
+                  <td className={styles.tb}>
+                    <div className={styles.tbody_actions}>
+                      <ButtonEdit userId={user.id} />
 
-                        <ButtonDelete user={user} updateUsers={updateUsers} />
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })
+                      <ButtonDelete userId={user.id} updateUsers={updateUsers} />
+                    </div>
+                  </td>
+                </tr>
+              ))
             ) : (
               <tr>
                 <td
@@ -114,13 +104,6 @@ export const PageHome = () => {
                   <span>
                     Página {page} de {Math.ceil(total / limit) || 1}
                   </span>
-
-                  {/* <div>
-                    <a href='/?page=1'>Primeira</a>
-                    <a href={`/?page=${page - 1}`}>Anterior</a>
-                    <a href={`/?page=${page + 1}`}>Próxima</a>
-                    <a href={`/?page=${Math.ceil(total / limit)}`}>Última</a>
-                  </div> */}
                 </div>
               </td>
             </tr>
@@ -128,40 +111,5 @@ export const PageHome = () => {
         </table>
       </div>
     </main>
-  );
-};
-
-const ButtonDelete = ({ user, updateUsers }: { user: User; updateUsers: () => void }) => {
-  const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
-
-  const handleDelete = (id: string) => {
-    if (confirmDelete) {
-      deleteUser(id);
-      updateUsers();
-    } else {
-      setConfirmDelete(true);
-    }
-  };
-
-  useEffect(() => {
-    if (confirmDelete) {
-      const timeout = setTimeout(() => {
-        setConfirmDelete(false);
-      }, 3000);
-
-      return () => clearTimeout(timeout);
-    }
-  }, [confirmDelete]);
-
-  return (
-    <Button
-      leftIcon={<Trash2 size={18} />}
-      onClick={(e: React.MouseEvent) => {
-        e.stopPropagation();
-        handleDelete(user.id);
-      }}
-    >
-      {confirmDelete ? 'Confirmar' : 'Excluir'}
-    </Button>
   );
 };

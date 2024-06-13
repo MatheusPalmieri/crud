@@ -9,12 +9,6 @@
   gap: 20px;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .details {
   border: 1px solid #ccc;
   border-radius: 12px;

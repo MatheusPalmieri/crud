@@ -1,7 +1,6 @@
 import { Header } from '@/components/Header';
-import { Title } from '@/components/Title';
-import { deleteUser, getUser } from '@/services/user';
-import { ChevronLeft, Pencil, Trash2 } from 'lucide-react';
+import { getUser } from '@/services/user';
+import { ChevronLeft } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from './styles.module.css';
 
@@ -9,8 +8,9 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/pt-br';
 import { User, UserStatus } from '@/interfaces/user';
-import { useEffect, useState } from 'react';
-import { Button } from '@/components/Button';
+import { Navbar } from '@/components/Navbar';
+import { ButtonDelete } from '@/components/ButtonDelete';
+import { ButtonEdit } from '@/components/ButtonEdit';
 
 dayjs.extend(relativeTime);
 dayjs.locale('pt-br');
@@ -22,94 +22,57 @@ export const PageDetails = () => {
   if (!params.id) navigate('/');
 
   const user = getUser(params.id) as User;
-
   if (!user) navigate('/');
+  const { id, name, phone, email, status, createdAt, updatedAt } = user;
 
   const StatusLabel: Record<UserStatus, string> = {
     [UserStatus.ACTIVE]: 'Ativo',
     [UserStatus.INACTIVE]: 'Inativo',
   };
 
-  const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
-
-  const handleDelete = (id: string) => {
-    if (confirmDelete) {
-      deleteUser(id);
-    } else {
-      setConfirmDelete(true);
-    }
-  };
-
-  useEffect(() => {
-    if (confirmDelete) {
-      const timeout = setTimeout(() => {
-        setConfirmDelete(false);
-      }, 3000);
-
-      return () => clearTimeout(timeout);
-    }
-  }, [confirmDelete]);
-
   return (
     <main className={styles.section}>
       <Header />
 
-      <div className={styles.header}>
-        <Title>Paciente #{user.id}</Title>
-
-        <Button leftIcon={<ChevronLeft size={18} />} onClick={() => navigate(`/`)}>
-          Voltar
-        </Button>
-      </div>
+      <Navbar
+        title={`Paciente #${id}`}
+        buttonIcon={<ChevronLeft size={18} />}
+        buttonText='Voltar'
+        buttonRoute='/'
+      />
 
       <div className={styles.details}>
         <p>
-          <strong>Nome:</strong> {user.name}
+          <strong>Nome:</strong> {name}
         </p>
         <p>
-          <strong>Telefone:</strong> {user.phone}
-        </p>
-
-        <div className={styles.divider} />
-
-        <p>
-          <strong>Email:</strong> {user.email}
-        </p>
-        <p>
-          <strong>Status:</strong> {StatusLabel[user.status]}
+          <strong>Telefone:</strong> {phone}
         </p>
 
         <div className={styles.divider} />
 
         <p>
-          <strong>Criado:</strong> {dayjs().to(user.createdAt)}
+          <strong>Email:</strong> {email}
         </p>
         <p>
-          <strong>Atualizado:</strong> {dayjs().to(user.updatedAt)}
+          <strong>Status:</strong> {StatusLabel[status]}
+        </p>
+
+        <div className={styles.divider} />
+
+        <p>
+          <strong>Criado:</strong> {dayjs().to(createdAt)}
+        </p>
+        <p>
+          <strong>Atualizado:</strong> {dayjs().to(updatedAt)}
         </p>
 
         <div className={styles.divider} />
 
         <div className={styles.actions}>
-          <Button
-            leftIcon={<Pencil size={18} />}
-            onClick={(e: React.MouseEvent) => {
-              e.stopPropagation();
-              navigate(`/editar/${user.id}`);
-            }}
-          >
-            Editar
-          </Button>
+          <ButtonEdit userId={id} />
 
-          <Button
-            leftIcon={<Trash2 size={18} />}
-            onClick={(e: React.MouseEvent) => {
-              e.stopPropagation();
-              handleDelete(user.id);
-            }}
-          >
-            {confirmDelete ? 'Confirmar' : 'Excluir'}
-          </Button>
+          <ButtonDelete userId={id} updateUsers={() => navigate('/')} />
         </div>
       </div>
     </main>

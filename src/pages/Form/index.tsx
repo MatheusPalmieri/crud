@@ -5,11 +5,11 @@ import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from './styles.module.css';
-import { Title } from '@/components/Title';
 import { ChevronLeft } from 'lucide-react';
 import { Header } from '@/components/Header';
 import { formatPhone } from '@/utils/format';
 import { Button } from '@/components/Button';
+import { Navbar } from '@/components/Navbar';
 
 export const PageForm = () => {
   const navigate = useNavigate();
@@ -65,13 +65,12 @@ export const PageForm = () => {
     <main className={styles.section}>
       <Header />
 
-      <div className={styles.header}>
-        <Title>{isEditing ? `Editar paciente #${params.id}` : 'Novo paciente'}</Title>
-
-        <Button leftIcon={<ChevronLeft size={18} />} onClick={() => navigate(`/`)}>
-          Voltar
-        </Button>
-      </div>
+      <Navbar
+        title={isEditing ? `Editar paciente #${params.id}` : 'Novo paciente'}
+        buttonIcon={<ChevronLeft size={18} />}
+        buttonText='Voltar'
+        buttonRoute='/'
+      />
 
       <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
         <div className={styles.form_inputs}>
